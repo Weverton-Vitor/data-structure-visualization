@@ -210,7 +210,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.datastructurevisualization/com.example.datastructurevisualization.Main
+                                com.project.datastructurevisualization/com.project.datastructurevisualization.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

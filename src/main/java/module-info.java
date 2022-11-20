@@ -4,6 +4,6 @@ module com.example.datastructurevisualization {
     requires javafx.web;
 
 
-    opens com.example.datastructurevisualization to javafx.fxml;
-    exports com.example.datastructurevisualization;
+    opens com.project.datastructurevisualization to javafx.fxml;
+    exports com.project.datastructurevisualization;
 }

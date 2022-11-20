@@ -1,4 +1,4 @@
-package com.example.datastructurevisualization;
+package com.project.datastructurevisualization;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
