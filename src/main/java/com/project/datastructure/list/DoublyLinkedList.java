@@ -78,22 +78,28 @@ public class DoublyLinkedList {
         return true;
     }
 
-    public void remove(DoublyLinkedListNode element) {
-        if (element.getValue() == this.getHead().getValue()) { // remove head
+    public boolean remove(int position) {
+        if (position <= 0 && position > this.length)
+            return false;
+        if (position == 1) {
             this.setHead(this.getHead().getNext());
-            this.getTail().setNext(this.getHead());
-            this.getHead().setPrevious(this.getTail());
-        } else if (element.getValue() == this.getTail().getValue()) { // remove tail
+            this.getHead().setPrevious(null);
+        } else if (position == this.length) {
             this.setTail(this.getTail().getPrevious());
-            this.getHead().setPrevious(this.getTail());
-            this.getTail().setNext(this.getHead());
-        } else { // remove a common element
-            element.getPrevious().setNext(element.getNext());
-            element.getNext().setPrevious(element.getPrevious());
+            this.getTail().setNext(null);
+        } else {
+            DoublyLinkedListNode copyNode = this.getHead();
+            for (int i = 2; i <= position; i++) {
+                copyNode = copyNode.getNext();
+            }
+
+            copyNode.getNext().setPrevious(copyNode.getPrevious());
+            copyNode.getPrevious().setNext(copyNode.getNext());
         }
 
         this.length--;
 
+        return true;
     }
 
     public int searchByPosition(int position) {
