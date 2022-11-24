@@ -1,16 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.project.datastructurevisualization.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<VBox prefHeight="1052.0" prefWidth="1548.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.project.datastructurevisualization.MainController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="412.0">
+               <children>
+                  <ComboBox fx:id="structureTypeSelect" prefHeight="39.0" prefWidth="385.0" promptText="Selecione a estrutura de dados" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="174.0">
+               <children>
+                  <Label text="Valor:" />
+                  <TextField fx:id="inputValue">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets top="6.0" />
+               </padding>
+            </VBox>
+            <HBox fx:id="controlsHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="857.0">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </HBox>
+      <ScrollPane prefHeight="883.0" prefWidth="1508.0">
+         <content>
+            <Group fx:id="shapesGroup" />
+         </content>
+         <padding>
+            <Insets top="200.0" />
+         </padding>
+      </ScrollPane>
+   </children>
 </VBox>
