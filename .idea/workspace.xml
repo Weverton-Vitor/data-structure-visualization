@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d896c3e4-0d0f-4c3a-8ad7-0ce64d493deb" name="Changes" comment="" />
+    <list default="true" id="d896c3e4-0d0f-4c3a-8ad7-0ce64d493deb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/shapes/ButtonNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/datastructure/list/ButtonNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/datastructure/stack/PilhaEnc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/datastructure/stack/PilhaEnc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/datastructurevisualization/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/datastructurevisualization/MainController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,7 +44,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/projectsjava/DataStructureVisualization/src/main/java/com/project/datastructure&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/projectsjava/Checkers&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -100,6 +106,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/project/datastructure/list/SimplyLinkedList.java</url>
           <line>127</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/project/datastructurevisualization/MainController.java</url>
+          <line>164</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

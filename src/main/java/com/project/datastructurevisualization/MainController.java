@@ -1,5 +1,6 @@
 package com.project.datastructurevisualization;
-import com.project.datastructure.list.ButtonNode;
+import com.project.datastructure.stack.PilhaEnc;
+import com.project.shapes.ButtonNode;
 import com.project.datastructure.list.SimplyLinkedList;
 import com.project.datastructure.list.DoublyLinkedList;
 import com.project.shapes.Arrow;
@@ -20,6 +21,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private SimplyLinkedList simplyLinkedList = new SimplyLinkedList();
     private DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+
+    private PilhaEnc stack = new PilhaEnc();
+
 
     private String currentType = "";
 
@@ -113,7 +117,7 @@ public class MainController implements Initializable {
                 this.simplyLinkedList.add(Integer.parseInt(this.inputValue.getText()));
                 updatePositionsInput(simplyLinkedList.getLength());
 
-                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1);
+                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
@@ -132,7 +136,7 @@ public class MainController implements Initializable {
                 this.doublyLinkedList.add(Integer.parseInt(this.inputValue.getText()), 1);
                 updatePositionsInput(doublyLinkedList.getLength());
 
-                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1);
+                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
@@ -146,6 +150,12 @@ public class MainController implements Initializable {
                 renderDoublyLinkedList();
 
             }
+        } else if (currentType.equals("Pilha")) {
+                int value = Integer.parseInt(this.inputValue.getText());
+                this.stack.push(value);
+                shapesGroup.getChildren().clear();
+                System.out.println("stack");
+                renderStack();
         }
 //        System.out.println(this.simplyLinkedList.getLength());
     }
@@ -156,33 +166,28 @@ public class MainController implements Initializable {
             Integer value = this.simplyLinkedList.searchByPosition(i);
 
             if (i == 1) {
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i);
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
                 ButtonNode lastRectangle = (ButtonNode) shapesGroup.getChildren().get(shapesGroup.getChildren().size() - 1);
 
                 Arrow arrow = new Arrow();
-                arrow.setStartY(13);
-                arrow.setEndY(14);
+                arrow.setStartY(25);
+                arrow.setEndY(25);
 
-                int start = 25;
-                if (lastRectangle.getText().length() == 2)
-                    start = 30;
-                else if (lastRectangle.getText().length() == 3) {
-                    start = 35;
-                } else if (lastRectangle.getText().length() == 4) {
-                    start = 42;
-                } else if (lastRectangle.getText().length() == 5) {
-                    start = 47;
+                int start = 30;
+                for (int j = 0; j < lastRectangle.getText().length(); j++) {
+                    start+=15;
                 }
 
-                arrow.setStartX(lastRectangle.getTranslateX() + start);
-                arrow.setEndX(lastRectangle.getTranslateX() + 40 + start);
 
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i);
+                arrow.setStartX(lastRectangle.getTranslateX() + start);
+                arrow.setEndX(lastRectangle.getTranslateX() + 55 + start);
+
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
-                newRectangle.setTranslateX(lastRectangle.getTranslateX() + 40 + start);
+                newRectangle.setTranslateX(lastRectangle.getTranslateX() + 55 + start);
 
                 shapesGroup.getChildren().add(arrow);
                 shapesGroup.getChildren().add(newRectangle);
@@ -198,30 +203,25 @@ public class MainController implements Initializable {
             Integer value = this.doublyLinkedList.searchByPosition(i);
 
             if (i == 1) {
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i);
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
                 ButtonNode lastRectangle = (ButtonNode) shapesGroup.getChildren().get(shapesGroup.getChildren().size() - 1);
 
                 Arrow arrow = new Arrow();
-                arrow.setStartY(2);
-                arrow.setEndY(3);
+                arrow.setStartY(10);
+                arrow.setEndY(10);
 
                 Arrow arrowBack = new Arrow();
-                arrowBack.setStartY(25);
-                arrowBack.setEndY(25);
+                arrowBack.setStartY(40);
+                arrowBack.setEndY(40);
 
-                int start = 25;
-                if (lastRectangle.getText().length() == 2)
-                    start = 30;
-                else if (lastRectangle.getText().length() == 3) {
-                    start = 35;
-                } else if (lastRectangle.getText().length() == 4) {
-                    start = 42;
-                } else if (lastRectangle.getText().length() == 5) {
-                    start = 47;
+                int start = 30;
+                for (int j = 0; j < lastRectangle.getText().length(); j++) {
+                    start+=15;
                 }
+
 
                 arrow.setStartX(lastRectangle.getTranslateX() + start);
                 arrow.setEndX(lastRectangle.getTranslateX() + 40 + start);
@@ -229,7 +229,7 @@ public class MainController implements Initializable {
                 arrowBack.setEndX(lastRectangle.getTranslateX() + start);
                 arrowBack.setStartX(lastRectangle.getTranslateX() + 40 + start);
 
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i);
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 newRectangle.setTranslateX(lastRectangle.getTranslateX() + 40 + start);
 
@@ -244,7 +244,15 @@ public class MainController implements Initializable {
     }
 
     public void renderStack(){
-        // TODO
+        VBox containerStack = new VBox();
+
+        for (int i = 0; i < 10; i++) {
+            ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "stack");
+            containerStack.getChildren().add(newRectangle);
+        }
+
+        shapesGroup.getChildren().clear();
+        shapesGroup.getChildren().add(containerStack);
     }
 
     public void renderQueue(){
@@ -302,7 +310,7 @@ public class MainController implements Initializable {
             case "Pilha":
 
                 Button btnPile = new Button("Empilhar");
-                //TODO criar e setar o método de click
+                btnPile.setOnAction(this::onBtnAddClick);
                 this.controlsHBox.getChildren().add(btnPile);
                 btnPile.setAlignment(Pos.CENTER_LEFT);
 
