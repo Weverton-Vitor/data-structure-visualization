@@ -87,4 +87,15 @@ public class PilhaEnc {
 	}
 
 
+	public int[] caminhar () {
+		No copy = this.topo;
+		int elements[] = new int[this.nElementos];
+		elements[0] = topo.getConteudo();
+		for (int i = 2; i <= this.nElementos; i++) {
+			copy = copy.getProx();
+			elements[i-1] = copy.getConteudo();
+		}
+		return elements;
+	}
+
 }

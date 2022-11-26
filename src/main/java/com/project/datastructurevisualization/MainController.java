@@ -1,4 +1,5 @@
 package com.project.datastructurevisualization;
+import com.project.datastructure.queue.FilaEnc;
 import com.project.datastructure.stack.PilhaEnc;
 import com.project.shapes.ButtonNode;
 import com.project.datastructure.list.SimplyLinkedList;
@@ -24,6 +25,8 @@ public class MainController implements Initializable {
 
     private PilhaEnc stack = new PilhaEnc();
 
+    private FilaEnc queue = new FilaEnc();
+
 
     private String currentType = "";
 
@@ -40,6 +43,9 @@ public class MainController implements Initializable {
 
     @FXML
     private Button btnAdd = new Button();
+
+    @FXML
+    private ScrollPane scrollContainer = new ScrollPane();
 
     @FXML
     private Group shapesGroup = new Group();
@@ -67,6 +73,7 @@ public class MainController implements Initializable {
         System.out.println("aa");
     }
 
+    // Renderiza a tela de acordo com a estrutura selecionada
     public void OnStructureTypeSelect(ActionEvent event) {
         this.currentType = this.structureTypeSelect.valueProperty().getValue();
         // Limpando a tela de desenho
@@ -80,6 +87,11 @@ public class MainController implements Initializable {
         else if (currentType.equals("Lista Duplamente Encadeada")) {
             renderDoublyLinkedList();
             updatePositionsInput(doublyLinkedList.getLength());
+        } else if (currentType.equals("Pilha")) {
+            renderStack();
+        } else if (currentType.equals("Fila")) {
+            renderQueue();
+            System.out.println("fila");
         }
 
         // Redefinindo os controles para se adequear a estruturas de dados selecionada
@@ -154,19 +166,36 @@ public class MainController implements Initializable {
                 int value = Integer.parseInt(this.inputValue.getText());
                 this.stack.push(value);
                 shapesGroup.getChildren().clear();
-                System.out.println("stack");
                 renderStack();
+        } else if (currentType.equals("Fila")) {
+            int value = Integer.parseInt(this.inputValue.getText());
+            this.queue.insere(value);
+            shapesGroup.getChildren().clear();
+            renderQueue();
+
         }
 //        System.out.println(this.simplyLinkedList.getLength());
     }
 
+    public void onBtnPopclick(ActionEvent event) {
+        this.stack.pop();
+        renderStack();
+    }
+
+    public void onBtnUnqueue(ActionEvent event){
+        this.queue.remove();
+        renderQueue();
+    }
 
     public void renderSimpleLinkedList() {
+
+        // Ajustando o padding do scroll pane
+        this.scrollContainer.setPadding(new Insets(200, 0, 0, 0));
         for (int i = 1; i <= this.simplyLinkedList.getLength(); i++) {
             Integer value = this.simplyLinkedList.searchByPosition(i);
 
             if (i == 1) {
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), 1, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
@@ -199,11 +228,13 @@ public class MainController implements Initializable {
     }
 
     public void renderDoublyLinkedList() {
+        // Ajustando o padding do scroll pane
+        this.scrollContainer.setPadding(new Insets(200, 0, 0, 0));
         for (int i = 1; i <= this.doublyLinkedList.getLength(); i++) {
             Integer value = this.doublyLinkedList.searchByPosition(i);
 
             if (i == 1) {
-                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), i, "list");
+                ButtonNode newRectangle = new ButtonNode(String.valueOf(value), 1, "list");
                 newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
                 shapesGroup.getChildren().add(newRectangle);
             } else {
@@ -244,19 +275,66 @@ public class MainController implements Initializable {
     }
 
     public void renderStack(){
+
+        // Ajustando o padding do scroll pane
+        this.scrollContainer.setPadding(new Insets(50, 0, 0, 0));
         VBox containerStack = new VBox();
 
-        for (int i = 0; i < 10; i++) {
-            ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "stack");
-            containerStack.getChildren().add(newRectangle);
-        }
+        if (!this.stack.vazia()) {
 
+            Arrow arrow = new Arrow();
+            arrow.setStartY(60);
+            arrow.setEndY(10);
+
+            arrow.setTranslateX(615);
+
+
+            containerStack.getChildren().add(arrow);
+            int elements[] = this.stack.caminhar();
+
+            for (int i = 1; i <= elements.length; i++) {
+                ButtonNode newRectangle = new ButtonNode(Integer.toString(elements[i-1]), i, "queue");
+                VBox.setMargin(newRectangle, new Insets(0, 0, 5, 600));
+
+                containerStack.getChildren().add(newRectangle);
+            }
+        }
         shapesGroup.getChildren().clear();
         shapesGroup.getChildren().add(containerStack);
     }
 
     public void renderQueue(){
-        // TODO
+        // Ajustando o padding do scroll pane
+        this.scrollContainer.setPadding(new Insets(200, 0, 0, 0));
+        HBox containerQueue = new HBox();
+
+        if (!this.queue.vazia()){
+
+//        Arrow arrow = new Arrow();
+//        arrow.setStartY(60);
+//        arrow.setEndY(10);
+//
+//
+//        arrow.setStartX(600);
+//        arrow.setEndX(900);
+//
+//        arrow.setTranslateX(615);
+
+
+//        containerStack.getChildren().add(arrow);
+            int elements[] = this.queue.caminhar();
+
+            for (int i = 1; i <= elements.length; i++) {
+                ButtonNode newRectangle = new ButtonNode(Integer.toString(elements[i-1]), i, "stack");
+
+                HBox.setMargin(newRectangle, new Insets(0, 0, 0, 5));
+
+                containerQueue.getChildren().add(newRectangle);
+            }
+        }
+
+        shapesGroup.getChildren().clear();
+        shapesGroup.getChildren().add(containerQueue);
     }
 
     public void renderTree(){
@@ -317,7 +395,7 @@ public class MainController implements Initializable {
                 HBox.setMargin(btnPile, new Insets(0, 10, -7, 0));
 
                 Button btnPop = new Button("Desempilhar");
-                //TODO criar e setar o método de click
+                btnPop.setOnAction(this::onBtnPopclick);
                 btnPop.setAlignment(Pos.CENTER_LEFT);
                 HBox.setMargin(btnPop, new Insets(0, 10, -7, 0));
                 this.controlsHBox.getChildren().add(btnPop);
@@ -327,7 +405,21 @@ public class MainController implements Initializable {
 
                 break;
             case "Fila":
-                //TODO contruir os controles para a fila
+
+                Button btnQueue = new Button("Enfileirar");
+                btnQueue.setOnAction(this::onBtnAddClick);
+                this.controlsHBox.getChildren().add(btnQueue);
+                btnQueue.setAlignment(Pos.CENTER_LEFT);
+
+                HBox.setMargin(btnQueue, new Insets(0, 10, -7, 0));
+
+                Button btnUnqueue = new Button("Desenfileirar");
+                btnUnqueue.setOnAction(this::onBtnUnqueue);
+                btnUnqueue.setAlignment(Pos.CENTER_LEFT);
+                HBox.setMargin(btnUnqueue, new Insets(0, 10, -7, 0));
+                this.controlsHBox.getChildren().add(btnUnqueue);
+
+                this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
                 break;
             case "Árvore De Pesquisa":
                 //TODO contruir os controles para a árvore

@@ -77,4 +77,15 @@ public class FilaEnc {
 	    nElementos--;
 		return valor;
 	}
+
+	public int[] caminhar () {
+		No copy = this.inicio;
+		int elements[] = new int[this.nElementos];
+		elements[0] = this.inicio.getConteudo();
+		for (int i = 2; i <= this.nElementos; i++) {
+			copy = copy.getProx();
+			elements[i-1] = copy.getConteudo();
+		}
+		return elements;
+	}
 }

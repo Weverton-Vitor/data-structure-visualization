@@ -19,10 +19,20 @@ public class ButtonNode extends Button {
             this.width+=15;
         }
 
-        String stringStyle = "-fx-background-color: #9a98a6;" +
-                "-fx-pref-height: 50px; -fx-text-fill: white; -fx-font-size: 15pt; -fx-font-weight: bold; -fx-cursor: hand;";
+        String stringStyle = "-fx-pref-height: 50px; -fx-text-fill: white; -fx-font-size: 15pt; -fx-font-weight: bold; -fx-cursor: hand;";
 
         stringStyle+= "-fx-pref-width: " +Integer.toString(this.width) + ";";
+
+        // Destaque na cor para o primeiro e ultimo item
+        if (index == 1) {
+            stringStyle += "-fx-background-color: #00ff00;";
+        }
+//        else if (index==){
+//            stringStyle += "-fx-background-color: #9a98a6;";
+//        }
+        else {
+            stringStyle += "-fx-background-color: #9a98a6;";
+        }
 
         if (this.structureType.equals("list")) {
             stringStyle += "-fx-background-radius: 10px;";

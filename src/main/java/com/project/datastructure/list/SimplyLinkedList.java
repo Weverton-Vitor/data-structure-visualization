@@ -149,11 +149,14 @@ public class SimplyLinkedList {
     public boolean remove(int position) {
         SimplyLinkedListNode copy = this.getHead();
 
-        if (position == 1) {
+        if (this.length == 1) {
             this.head = null;
             this.length--;
             return true;
         }
+
+        if (position == 1)
+            this.head = copy.getNext();
 
         if (position > this.length || position <= 0)
             return false;
