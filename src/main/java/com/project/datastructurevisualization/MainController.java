@@ -1,6 +1,8 @@
 package com.project.datastructurevisualization;
 import com.project.datastructure.queue.FilaEnc;
 import com.project.datastructure.stack.PilhaEnc;
+import com.project.datastructure.tree.Node;
+import com.project.datastructure.tree.Tree;
 import com.project.shapes.ButtonNode;
 import com.project.datastructure.list.SimplyLinkedList;
 import com.project.datastructure.list.DoublyLinkedList;
@@ -14,9 +16,14 @@ import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.project.datastructure.tree.Type.INORDER;
 
 
 public class MainController implements Initializable {
@@ -26,6 +33,9 @@ public class MainController implements Initializable {
     private PilhaEnc stack = new PilhaEnc();
 
     private FilaEnc queue = new FilaEnc();
+
+
+    private Tree arvore = new Tree();
 
 
     private String currentType = "";
@@ -49,6 +59,10 @@ public class MainController implements Initializable {
 
     @FXML
     private Group shapesGroup = new Group();
+
+    @FXML
+    private Pane containerTree = new Pane();
+
 
     @FXML
     private HBox controlsHBox = new HBox();
@@ -104,20 +118,22 @@ public class MainController implements Initializable {
     public void onBtnDeleteClick(javafx.scene.input.MouseEvent mouseEvent) {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if (mouseEvent.getClickCount() == 2) { // Double click
-                ButtonNode target = (ButtonNode) mouseEvent.getTarget();
-                if (currentType.equals("Lista Simplesmente Encadeada")) {
-                    if (this.simplyLinkedList.remove(target.getIndex())) {
-                        shapesGroup.getChildren().clear();
-                        renderSimpleLinkedList();
-                        updatePositionsInput(simplyLinkedList.getLength());
+                try {
+                    ButtonNode target = (ButtonNode) mouseEvent.getTarget();
+                    if (currentType.equals("Lista Simplesmente Encadeada")) {
+                        if (this.simplyLinkedList.remove(target.getIndex())) {
+                            shapesGroup.getChildren().clear();
+                            renderSimpleLinkedList();
+                            updatePositionsInput(simplyLinkedList.getLength());
+                        }
+                    } else if (currentType.equals("Lista Duplamente Encadeada")) {
+                        if (this.doublyLinkedList.remove(target.getIndex())) {
+                            shapesGroup.getChildren().clear();
+                            renderDoublyLinkedList();
+                            updatePositionsInput(doublyLinkedList.getLength());
+                        }
                     }
-                } else if (currentType.equals("Lista Duplamente Encadeada")) {
-                    if (this.doublyLinkedList.remove(target.getIndex())) {
-                        shapesGroup.getChildren().clear();
-                        renderDoublyLinkedList();
-                        updatePositionsInput(doublyLinkedList.getLength());
-                    }
-                }
+                } catch (Exception e){}
             }
         }
     }
@@ -173,8 +189,14 @@ public class MainController implements Initializable {
             shapesGroup.getChildren().clear();
             renderQueue();
 
-        }
+        }else if (currentType.equals("Árvore De Pesquisa")) {
+            int value = Integer.parseInt(this.inputValue.getText());
+            this.arvore.add(value);
+            shapesGroup.getChildren().clear();
+            arvore.print(INORDER);
+            renderTree();
 //        System.out.println(this.simplyLinkedList.getLength());
+        }
     }
 
     public void onBtnPopclick(ActionEvent event) {
@@ -338,7 +360,86 @@ public class MainController implements Initializable {
     }
 
     public void renderTree(){
-        // TODO
+//      Group  shapesGroup = new Group();
+      containerTree.getChildren().clear();
+        renderNodeTree(arvore.getRoot(), "root", null, 1);
+
+        System.out.println(shapesGroup.getChildren());
+        shapesGroup.getChildren().add(containerTree);
+//      this.scrollContainer.
+    }
+
+    public void renderNodeTree(Node node, String noteType, ButtonNode parent, int nivel){
+        int heigth = arvore.getHeigth(arvore.getRoot());
+        int margin = 0;
+        if (nivel == 3){
+            margin = 150;
+        } else if (nivel == 4) {
+            margin = 200;
+
+        } else if (nivel == 5) {
+            margin = 250;
+
+        }
+        if (node != null) {
+            ButtonNode newRectangle = new ButtonNode(Integer.toString(node.getValue()), 0, "tree");
+
+            if (noteType.equals("left")){
+                newRectangle.setMarginTop(parent.getMarginTop() + 110);
+                if (heigth < 5) {
+                    if (nivel < 5) {
+                        newRectangle.setMarginLeft(parent.getMarginLeft() - (90 - (20 * nivel)) * heigth);
+//                        arrow.relocate(newRectangle.getMarginLeft(), newRectangle.getMarginTop());
+                    } else if (nivel == 7) {
+                        newRectangle.setMarginLeft(parent.getMarginLeft() - (90 - (15 * nivel)) * heigth);
+                    }
+                } else {
+                    newRectangle.setMarginLeft(parent.getMarginLeft() - (120 - (20 * nivel)) * heigth);
+
+                }
+                Line arrow = new Line();
+                arrow.setStartY(parent.getMarginTop());
+                arrow.setEndY(newRectangle.getMarginTop());
+                arrow.setStartX(parent.getMarginLeft());
+                arrow.setEndX(newRectangle.getMarginLeft());
+                containerTree.getChildren().add(arrow);
+            } else if (noteType.equals("right")){
+                if (heigth < 5) {
+                    if (nivel < 5) {
+                        newRectangle.setMarginLeft(parent.getMarginLeft() + (90 - (20 * nivel)) * heigth);
+                    } else if (nivel < 7) {
+                        newRectangle.setMarginLeft(parent.getMarginLeft() + (90 - (15 * nivel)) * heigth);
+                    }
+                } else {
+                    newRectangle.setMarginLeft(parent.getMarginLeft() + (120 - (20 * nivel)) * heigth);
+
+                }
+                newRectangle.setMarginTop(parent.getMarginTop() + 110);
+                Line arrow = new Line();
+                arrow.setStartY(parent.getMarginTop());
+                arrow.setEndY(newRectangle.getMarginTop());
+                arrow.setStartX(parent.getMarginLeft());
+                arrow.setEndX(newRectangle.getMarginLeft());
+                containerTree.getChildren().add(arrow);
+            } else {
+                newRectangle.setMarginLeft(600);
+                newRectangle.setMarginTop(0);
+            }
+
+
+
+            containerTree.getChildren().add(newRectangle);
+
+
+            newRectangle.relocate(newRectangle.getMarginLeft(), newRectangle.getMarginTop());
+            System.out.println();
+            System.out.println("Margem top: "+newRectangle.getMarginTop());
+            System.out.println("Margem left: "+newRectangle.getMarginLeft());
+            System.out.println();
+
+            this.renderNodeTree(node.getLeft(), "left", newRectangle, nivel+1);
+            this.renderNodeTree(node.getRight(), "right", newRectangle, nivel+1);
+        }
     }
 
     // Atualiza as posições disponiveis para o caso de listas
@@ -422,7 +523,13 @@ public class MainController implements Initializable {
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
                 break;
             case "Árvore De Pesquisa":
-                //TODO contruir os controles para a árvore
+                Button btnTree = new Button("Adicionar");
+                btnTree.setOnAction(this::onBtnAddClick);
+                this.controlsHBox.getChildren().add(btnTree);
+                btnTree.setAlignment(Pos.CENTER_LEFT);
+
+                VBox.setMargin(btnTree, new Insets(0, 10, -7, 0));
+
                 break;
         }
 //        currentType.equals("Lista Simplesmente Encadeada")

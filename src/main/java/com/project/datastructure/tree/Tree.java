@@ -103,6 +103,18 @@ public class Tree {
     return find(this.root, value);
   }
 
+  public int getHeigth(Node node){
+    if (node == null)
+      return 0;
+
+    int leftHeigth = getHeigth(node.getLeft());
+    int rightHeigth = getHeigth(node.getRight());
+    if (leftHeigth > rightHeigth)
+      return leftHeigth + 1;
+
+    return rightHeigth + 1;
+  }
+
   public void print() {
     System.out.println();
     this.printInOrder();
@@ -117,4 +129,7 @@ public class Tree {
     }
   }
 
+  public Node getRoot() {
+    return root;
+  }
 }

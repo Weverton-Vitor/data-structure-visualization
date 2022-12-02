@@ -1,6 +1,6 @@
 package com.project.datastructure.tree;
 
-class Node {
+public class Node {
     private int value;
     private Node left, right;
 

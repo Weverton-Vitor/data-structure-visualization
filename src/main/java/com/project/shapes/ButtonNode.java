@@ -9,10 +9,14 @@ public class ButtonNode extends Button {
     private String structureType;
     private int width = 30;
 
+    private int marginTop;
+    private int marginLeft;
+
     public ButtonNode(String s, int index, String structureType) {
         super(s);
         this.index = index;
         this.structureType = structureType;
+
 
         // Adapatando o tamanho do no para a quantidade de digitos
         for (int i = 0; i < s.length(); i++) {
@@ -49,4 +53,22 @@ public class ButtonNode extends Button {
     public void setIndex(int index) {
         this.index = index;
     }
+
+    public int getMarginTop() {
+        return marginTop;
+    }
+
+    public void setMarginTop(int marginTop) {
+        this.marginTop = marginTop;
+    }
+
+    public int getMarginLeft() {
+        return marginLeft;
+    }
+
+    public void setMarginLeft(int marginLeft) {
+        this.marginLeft = marginLeft;
+    }
 }
+
+
