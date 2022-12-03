@@ -3,48 +3,13 @@ package com.project.datastructure.tree;
 public class Tree {
 
   private Node root;
+  private StringBuilder inOrder, preOrder, postOrder;
 
-  private void printInOrder(Node node) {
-    if (node == null) return;
-
-    this.printInOrder(node.getLeft());
-    System.out.print(" " + node.getValue());
-    this.printInOrder(node.getRight());
+  public Tree() {
+    this.inOrder = new StringBuilder();
+    this.preOrder = new StringBuilder();
+    this.postOrder = new StringBuilder();
   }
-
-  private void printPreOrder(Node node) {
-    if (node == null) return;
-
-    System.out.print(" " + node.getValue());
-    this.printInOrder(node.getLeft());
-    this.printInOrder(node.getRight());
-  }
-
-  private void printPostOrder(Node node) {
-    if (node == null) return;
-
-    this.printInOrder(node.getLeft());
-    this.printInOrder(node.getRight());
-    System.out.print(" " + node.getValue());
-  }
-  private void printInOrder() {
-    if (this.empty()) return;
-
-    this.printInOrder(this.root);
-  }
-
-  private void printPreOrder() {
-    if (this.empty()) return;
-
-    this.printPreOrder(this.root);
-  }
-
-  private void printPostOrder() {
-    if (this.empty()) return;
-
-    this.printPostOrder(this.root);
-  }
-
   public boolean empty() {
     return this.root == null;
   }
@@ -117,15 +82,70 @@ public class Tree {
 
   public void print() {
     System.out.println();
-    this.printInOrder();
+    System.out.println(walkInOrder());
   }
 
   public void print(Type type) {
     System.out.println();
     switch (type) {
-      case INORDER -> this.printInOrder();
-      case PREORDER -> this.printPreOrder();
-      case POSTORDER -> this.printPostOrder();
+      case INORDER -> System.out.println(this.walkInOrder());
+      case PREORDER -> System.out.println(this.walkPreOrder());
+      case POSTORDER -> System.out.println(this.walkPostOrder());
+    }
+  }
+
+  private void walkInOrder(Node node) {
+    if (node == null) return;
+
+    this.walkInOrder(node.getLeft());
+    this.inOrder.append(node.getValue()).append(" ");
+    this.walkInOrder(node.getRight());
+  }
+
+  private String walkInOrder() {
+    this.inOrder = new StringBuilder();
+    if (this.empty()) return "";
+    this.walkInOrder(this.root);
+    return this.inOrder.toString();
+  }
+
+  private void walkPreOrder(Node node) {
+    if (node == null) return;
+
+    this.preOrder.append(node.getValue()).append(" ");
+    this.walkPreOrder(node.getLeft());
+    this.walkPreOrder(node.getRight());
+  }
+
+  private String walkPreOrder() {
+    this.preOrder = new StringBuilder();
+    if (this.empty()) return "";
+    this.walkPreOrder(this.root);
+    return this.preOrder.toString();
+  }
+
+  private void walkPostOrder(Node node) {
+    if (node == null) return;
+
+    this.walkPostOrder(node.getLeft());
+    this.walkPostOrder(node.getRight());
+    this.postOrder.append(node.getValue()).append(" ");
+  }
+
+  private String walkPostOrder() {
+    this.postOrder = new StringBuilder();
+    if (this.empty()) return "";
+    this.walkPostOrder(this.root);
+    return this.postOrder.toString();
+  }
+
+  public String walk(Type type) {
+    System.out.println();
+    switch (type) {
+      case INORDER: return this.walkInOrder();
+      case PREORDER: return this.walkPreOrder();
+      case POSTORDER: return this.walkPostOrder();
+      default: return "";
     }
   }
 

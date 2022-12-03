@@ -23,7 +23,7 @@ import javafx.scene.shape.Line;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.project.datastructure.tree.Type.INORDER;
+import static com.project.datastructure.tree.Type.*;
 
 
 public class MainController implements Initializable {
@@ -35,7 +35,7 @@ public class MainController implements Initializable {
     private FilaEnc queue = new FilaEnc();
 
 
-    private Tree arvore = new Tree();
+    private Tree tree = new Tree();
 
 
     private String currentType = "";
@@ -66,6 +66,7 @@ public class MainController implements Initializable {
 
     @FXML
     private HBox controlsHBox = new HBox();
+    private VBox informations = new VBox();
 
 
     @Override
@@ -191,9 +192,9 @@ public class MainController implements Initializable {
 
         }else if (currentType.equals("Árvore De Pesquisa")) {
             int value = Integer.parseInt(this.inputValue.getText());
-            this.arvore.add(value);
+            this.tree.add(value);
             shapesGroup.getChildren().clear();
-            arvore.print(INORDER);
+            tree.print(INORDER);
             renderTree();
 //        System.out.println(this.simplyLinkedList.getLength());
         }
@@ -360,9 +361,17 @@ public class MainController implements Initializable {
     }
 
     public void renderTree(){
+        this.informations.getChildren().clear();
+        Label inOrder = new Label("In ordem: " + this.tree.walk(INORDER));
+        Label preOrder = new Label("Pre ordem: " + this.tree.walk(PREORDER));
+        Label postOrder = new Label("Pos ordem: " + this.tree.walk(POSTORDER));
+        postOrder.setMinWidth(150);
+        this.informations.getChildren().add(inOrder);
+        this.informations.getChildren().add(preOrder);
+        this.informations.getChildren().add(postOrder);
 //      Group  shapesGroup = new Group();
       containerTree.getChildren().clear();
-        renderNodeTree(arvore.getRoot(), "root", null, 1);
+        renderNodeTree(tree.getRoot(), "root", null, 1);
 
         System.out.println(shapesGroup.getChildren());
         shapesGroup.getChildren().add(containerTree);
@@ -370,7 +379,7 @@ public class MainController implements Initializable {
     }
 
     public void renderNodeTree(Node node, String noteType, ButtonNode parent, int nivel){
-        int heigth = arvore.getHeigth(arvore.getRoot());
+        int heigth = tree.getHeigth(tree.getRoot());
         int margin = 0;
         if (nivel == 3){
             margin = 150;
@@ -528,8 +537,23 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnTree);
                 btnTree.setAlignment(Pos.CENTER_LEFT);
 
+                this.tree.add(10);
+                this.tree.add(12);
+                this.tree.add(8);
                 VBox.setMargin(btnTree, new Insets(0, 10, -7, 0));
 
+                this.informations = new VBox();
+                Label inOrder = new Label("In ordem: " + this.tree.walk(INORDER));
+                Label preOrder = new Label("Pre ordem: " + this.tree.walk(PREORDER));
+                Label postOrder = new Label("Post ordem: " + this.tree.walk(POSTORDER));
+
+                informations.getChildren().add(inOrder);
+                informations.getChildren().add(preOrder);
+                informations.getChildren().add(postOrder);
+
+                this.controlsHBox.getChildren().add(informations);
+
+                HBox.setMargin(informations, new Insets(0, 10, 0, 50));
                 break;
         }
 //        currentType.equals("Lista Simplesmente Encadeada")
