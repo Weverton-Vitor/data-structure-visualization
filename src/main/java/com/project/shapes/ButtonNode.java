@@ -43,7 +43,8 @@ public class ButtonNode extends Button {
         }
 
         this.setStyle(stringStyle);
-
+        this.setWidth(this.width);
+        this.setHeight(50);
     }
 
     public int getIndex() {

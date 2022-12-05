@@ -370,7 +370,7 @@ public class MainController implements Initializable {
         this.informations.getChildren().add(preOrder);
         this.informations.getChildren().add(postOrder);
 //      Group  shapesGroup = new Group();
-      containerTree.getChildren().clear();
+        containerTree.getChildren().clear();
         renderNodeTree(tree.getRoot(), "root", null, 1);
 
         System.out.println(shapesGroup.getChildren());
@@ -378,57 +378,41 @@ public class MainController implements Initializable {
 //      this.scrollContainer.
     }
 
-    public void renderNodeTree(Node node, String noteType, ButtonNode parent, int nivel){
-        int heigth = tree.getHeigth(tree.getRoot());
-        int margin = 0;
-        if (nivel == 3){
-            margin = 150;
-        } else if (nivel == 4) {
-            margin = 200;
+    public void renderNodeTree(Node node, String nodeType, ButtonNode parent, int nivel){
+        int height = tree.getHeigth(tree.getRoot());
+        int acrescimoInicial = 300;
+        double taxaDeVariacaoPorNivel = 0.5;
+        int potencia = nivel - 1;
+        double taxaDeVariacaoDaBase = 1.5;
+        int potenciaBase = (int) Math.floor(height / 2);
+        System.out.println("Base: " + Math.pow(2, potenciaBase));
+        double acrescimoBase = acrescimoInicial * Math.pow(1.8, potenciaBase);
 
-        } else if (nivel == 5) {
-            margin = 250;
+        double totalAcrescimo =
+          (acrescimoBase) * Math.pow(taxaDeVariacaoPorNivel, potencia);
 
-        }
         if (node != null) {
             ButtonNode newRectangle = new ButtonNode(Integer.toString(node.getValue()), 0, "tree");
 
-            if (noteType.equals("left")){
+            if (nodeType.equals("left")){
                 newRectangle.setMarginTop(parent.getMarginTop() + 110);
-                if (heigth < 5) {
-                    if (nivel < 5) {
-                        newRectangle.setMarginLeft(parent.getMarginLeft() - (90 - (20 * nivel)) * heigth);
-//                        arrow.relocate(newRectangle.getMarginLeft(), newRectangle.getMarginTop());
-                    } else if (nivel == 7) {
-                        newRectangle.setMarginLeft(parent.getMarginLeft() - (90 - (15 * nivel)) * heigth);
-                    }
-                } else {
-                    newRectangle.setMarginLeft(parent.getMarginLeft() - (120 - (20 * nivel)) * heigth);
+                newRectangle.setMarginLeft((int) Math.round(parent.getMarginLeft() - totalAcrescimo));
 
-                }
                 Line arrow = new Line();
-                arrow.setStartY(parent.getMarginTop());
+                arrow.setStartY(parent.getMarginTop() + parent.getHeight() / 2);
                 arrow.setEndY(newRectangle.getMarginTop());
                 arrow.setStartX(parent.getMarginLeft());
-                arrow.setEndX(newRectangle.getMarginLeft());
+                arrow.setEndX(newRectangle.getMarginLeft() + newRectangle.getWidth() / 2);
                 containerTree.getChildren().add(arrow);
-            } else if (noteType.equals("right")){
-                if (heigth < 5) {
-                    if (nivel < 5) {
-                        newRectangle.setMarginLeft(parent.getMarginLeft() + (90 - (20 * nivel)) * heigth);
-                    } else if (nivel < 7) {
-                        newRectangle.setMarginLeft(parent.getMarginLeft() + (90 - (15 * nivel)) * heigth);
-                    }
-                } else {
-                    newRectangle.setMarginLeft(parent.getMarginLeft() + (120 - (20 * nivel)) * heigth);
-
-                }
+            } else if (nodeType.equals("right")){
+                newRectangle.setMarginLeft((int) Math.round(parent.getMarginLeft() + totalAcrescimo));
                 newRectangle.setMarginTop(parent.getMarginTop() + 110);
+
                 Line arrow = new Line();
-                arrow.setStartY(parent.getMarginTop());
+                arrow.setStartY(parent.getMarginTop() + parent.getHeight() / 2);
                 arrow.setEndY(newRectangle.getMarginTop());
-                arrow.setStartX(parent.getMarginLeft());
-                arrow.setEndX(newRectangle.getMarginLeft());
+                arrow.setStartX(parent.getMarginLeft() + parent.getWidth());
+                arrow.setEndX(newRectangle.getMarginLeft() + newRectangle.getWidth() / 2);
                 containerTree.getChildren().add(arrow);
             } else {
                 newRectangle.setMarginLeft(600);
@@ -493,7 +477,10 @@ public class MainController implements Initializable {
 
                 this.controlsHBox.getChildren().add(btnAdd);
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
-
+                if (this.currentType.equals("Lista Simplesmente Encadeada"))
+                    renderSimpleLinkedList();
+                else
+                    renderDoublyLinkedList();
                 break;
             case "Pilha":
 
@@ -511,7 +498,7 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnPop);
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
-
+                renderStack();
 
                 break;
             case "Fila":
@@ -530,6 +517,7 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnUnqueue);
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
+                renderQueue();
                 break;
             case "Árvore De Pesquisa":
                 Button btnTree = new Button("Adicionar");
@@ -537,9 +525,9 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnTree);
                 btnTree.setAlignment(Pos.CENTER_LEFT);
 
+                this.tree.add(50);
+                this.tree.add(90);
                 this.tree.add(10);
-                this.tree.add(12);
-                this.tree.add(8);
                 VBox.setMargin(btnTree, new Insets(0, 10, -7, 0));
 
                 this.informations = new VBox();
@@ -554,6 +542,7 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(informations);
 
                 HBox.setMargin(informations, new Insets(0, 10, 0, 50));
+                renderTree();
                 break;
         }
 //        currentType.equals("Lista Simplesmente Encadeada")
