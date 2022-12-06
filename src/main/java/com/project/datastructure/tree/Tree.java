@@ -98,7 +98,7 @@ public class Tree {
     if (node == null) return;
 
     this.walkInOrder(node.getLeft());
-    this.inOrder.append(node.getValue()).append(" ");
+    this.inOrder.append(node.getValue()).append("  ");
     this.walkInOrder(node.getRight());
   }
 
@@ -112,7 +112,7 @@ public class Tree {
   private void walkPreOrder(Node node) {
     if (node == null) return;
 
-    this.preOrder.append(node.getValue()).append(" ");
+    this.preOrder.append(node.getValue()).append("  ");
     this.walkPreOrder(node.getLeft());
     this.walkPreOrder(node.getRight());
   }
@@ -129,7 +129,7 @@ public class Tree {
 
     this.walkPostOrder(node.getLeft());
     this.walkPostOrder(node.getRight());
-    this.postOrder.append(node.getValue()).append(" ");
+    this.postOrder.append(node.getValue()).append("  ");
   }
 
   private String walkPostOrder() {

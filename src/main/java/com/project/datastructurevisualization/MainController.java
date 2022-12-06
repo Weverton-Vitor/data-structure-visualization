@@ -38,9 +38,12 @@ public class MainController implements Initializable {
     private Tree tree = new Tree();
 
 
+
     private String currentType = "";
 
     String[] types = {"Lista Simplesmente Encadeada", "Lista Duplamente Encadeada", "Pilha", "Fila", "Árvore De Pesquisa"};
+
+    private String searchElement = "";
 
     @FXML
     private ComboBox<String> structureTypeSelect = new ComboBox<>();
@@ -81,16 +84,18 @@ public class MainController implements Initializable {
         //Add button config
         this.btnAdd.setOnAction(this::onBtnAddClick);
 
+        this.inputValue.setOnKeyPressed(this::OnTypeInputValue);
     }
 
-    @FXML
-    protected void onHelloButtonClick() {
-        System.out.println("aa");
+    public void OnTypeInputValue(javafx.scene.input.KeyEvent event){
+        this.inputValue.setStyle("-fx-text-inner-color: black;");
     }
+
 
     // Renderiza a tela de acordo com a estrutura selecionada
     public void OnStructureTypeSelect(ActionEvent event) {
         this.currentType = this.structureTypeSelect.valueProperty().getValue();
+        this.inputValue.setStyle("-fx-text-inner-color: black;");
         // Limpando a tela de desenho
         shapesGroup.getChildren().clear();
 
@@ -139,66 +144,73 @@ public class MainController implements Initializable {
         }
     }
 
-    // Call-Back para o evento de click no botão de adicionar um novo elemento na lista
+    // Call-Back para o evento de click no botão de adicionar um novo elemento na estrutura
     public void onBtnAddClick(ActionEvent event) {
-        if (currentType.equals("Lista Simplesmente Encadeada")) {
-            if (this.simplyLinkedList.getLength() == 0) {
-                this.simplyLinkedList.add(Integer.parseInt(this.inputValue.getText()));
-                updatePositionsInput(simplyLinkedList.getLength());
+        this.searchElement = "";
+        this.inputValue.setStyle("-fx-text-inner-color: black;");
+        try {
+            if (currentType.equals("Lista Simplesmente Encadeada")) {
+                if (this.simplyLinkedList.getLength() == 0) {
+                    this.simplyLinkedList.add(Integer.parseInt(this.inputValue.getText()));
+                    updatePositionsInput(simplyLinkedList.getLength());
 
-                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
-                newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
-                shapesGroup.getChildren().add(newRectangle);
-            } else {
-                int value = Integer.parseInt(this.inputValue.getText());
-                int position = Integer.parseInt(String.valueOf(this.positionList.valueProperty().getValue()));
+                    ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
+                    newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
+                    shapesGroup.getChildren().add(newRectangle);
+                } else {
+                    int value = Integer.parseInt(this.inputValue.getText());
+                    int position = Integer.parseInt(String.valueOf(this.positionList.valueProperty().getValue()));
 
-                this.simplyLinkedList.insert(value, position);
-                updatePositionsInput(simplyLinkedList.getLength());
+                    this.simplyLinkedList.insert(value, position);
+                    updatePositionsInput(simplyLinkedList.getLength());
 
-                shapesGroup.getChildren().clear();
-                renderSimpleLinkedList();
-            }
+                    shapesGroup.getChildren().clear();
+                    renderSimpleLinkedList();
+                }
 
-        } else if (currentType.equals("Lista Duplamente Encadeada")) {
-            if (this.doublyLinkedList.getLength() == 0) {
-                this.doublyLinkedList.add(Integer.parseInt(this.inputValue.getText()), 1);
-                updatePositionsInput(doublyLinkedList.getLength());
+            } else if (currentType.equals("Lista Duplamente Encadeada")) {
+                if (this.doublyLinkedList.getLength() == 0) {
+                    this.doublyLinkedList.add(Integer.parseInt(this.inputValue.getText()), 1);
+                    updatePositionsInput(doublyLinkedList.getLength());
 
-                ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
-                newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
-                shapesGroup.getChildren().add(newRectangle);
-            } else {
-                int value = Integer.parseInt(this.inputValue.getText());
-                int position = Integer.parseInt(String.valueOf(this.positionList.valueProperty().getValue()));
+                    ButtonNode newRectangle = new ButtonNode(this.inputValue.getText(), 1, "list");
+                    newRectangle.setOnMouseClicked(this::onBtnDeleteClick);
+                    shapesGroup.getChildren().add(newRectangle);
+                } else {
+                    int value = Integer.parseInt(this.inputValue.getText());
+                    int position = Integer.parseInt(String.valueOf(this.positionList.valueProperty().getValue()));
 
-                this.doublyLinkedList.add(value, position);
-                updatePositionsInput(doublyLinkedList.getLength());
+                    this.doublyLinkedList.add(value, position);
+                    updatePositionsInput(doublyLinkedList.getLength());
 
-                shapesGroup.getChildren().clear();
-                renderDoublyLinkedList();
+                    shapesGroup.getChildren().clear();
+                    renderDoublyLinkedList();
 
-            }
-        } else if (currentType.equals("Pilha")) {
+                }
+            } else if (currentType.equals("Pilha")) {
                 int value = Integer.parseInt(this.inputValue.getText());
                 this.stack.push(value);
                 shapesGroup.getChildren().clear();
                 renderStack();
-        } else if (currentType.equals("Fila")) {
-            int value = Integer.parseInt(this.inputValue.getText());
-            this.queue.insere(value);
-            shapesGroup.getChildren().clear();
-            renderQueue();
+            } else if (currentType.equals("Fila")) {
+                int value = Integer.parseInt(this.inputValue.getText());
+                this.queue.insere(value);
+                shapesGroup.getChildren().clear();
+                renderQueue();
 
-        }else if (currentType.equals("Árvore De Pesquisa")) {
-            int value = Integer.parseInt(this.inputValue.getText());
-            this.tree.add(value);
-            shapesGroup.getChildren().clear();
-            tree.print(INORDER);
-            renderTree();
-//        System.out.println(this.simplyLinkedList.getLength());
+            } else if (currentType.equals("Árvore De Pesquisa")) {
+                int value = Integer.parseInt(this.inputValue.getText());
+                this.tree.add(value);
+                shapesGroup.getChildren().clear();
+                tree.print(INORDER);
+                renderTree();
+                //        System.out.println(this.simplyLinkedList.getLength());
+            }
+        } catch (Exception e) {
+            this.inputValue.setText("");
         }
     }
+
 
     public void onBtnPopclick(ActionEvent event) {
         this.stack.pop();
@@ -208,6 +220,23 @@ public class MainController implements Initializable {
     public void onBtnUnqueue(ActionEvent event){
         this.queue.remove();
         renderQueue();
+    }
+
+    public void onBtnAddClickSearch(ActionEvent event) {
+        try {
+            Node node =  tree.find(Integer.parseInt(this.inputValue.getText()));
+            if (node == null) {
+                this.inputValue.setStyle("-fx-text-inner-color: red;");
+                this.searchElement = "";
+            } else {
+                this.searchElement = String.valueOf(node.getValue());
+                shapesGroup.getChildren().clear();
+                renderTree();
+            }
+        } catch (Exception e) {
+            this.inputValue.setText("");
+            this.inputValue.setStyle("-fx-text-inner-color: red;");
+        }
     }
 
     public void renderSimpleLinkedList() {
@@ -361,6 +390,7 @@ public class MainController implements Initializable {
     }
 
     public void renderTree(){
+        this.scrollContainer.setPadding(new Insets(0, 0, 0, 0));
         this.informations.getChildren().clear();
         Label inOrder = new Label("In ordem: " + this.tree.walk(INORDER));
         Label preOrder = new Label("Pre ordem: " + this.tree.walk(PREORDER));
@@ -393,6 +423,9 @@ public class MainController implements Initializable {
 
         if (node != null) {
             ButtonNode newRectangle = new ButtonNode(Integer.toString(node.getValue()), 0, "tree");
+            if (this.searchElement.equals(Integer.toString(node.getValue()))) {
+                newRectangle.setSelected();
+            }
 
             if (nodeType.equals("left")){
                 newRectangle.setMarginTop(parent.getMarginTop() + 110);
@@ -467,13 +500,13 @@ public class MainController implements Initializable {
                 // Ajustando a posição do input
                 containerPosition.getChildren().add(this.positionList);
                 containerPosition.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(containerPosition, new Insets(-7, 10, 0, 0));
+                HBox.setMargin(containerPosition, new Insets(10, 10, 0, 0));
 
                 this.controlsHBox.getChildren().add(containerPosition);
 
                 Button btnAdd = new Button("Adicionar");
                 btnAdd.setOnAction(this::onBtnAddClick);
-                HBox.setMargin(btnAdd, new Insets(5, 0, -7, 7));
+                HBox.setMargin(btnAdd, new Insets(20, 0, -7, 7));
 
                 this.controlsHBox.getChildren().add(btnAdd);
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
@@ -489,12 +522,12 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnPile);
                 btnPile.setAlignment(Pos.CENTER_LEFT);
 
-                HBox.setMargin(btnPile, new Insets(0, 10, -7, 0));
+                HBox.setMargin(btnPile, new Insets(20, 10, -7, 0));
 
                 Button btnPop = new Button("Desempilhar");
                 btnPop.setOnAction(this::onBtnPopclick);
                 btnPop.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(btnPop, new Insets(0, 10, -7, 0));
+                HBox.setMargin(btnPop, new Insets(20, 10, -7, 0));
                 this.controlsHBox.getChildren().add(btnPop);
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
@@ -508,12 +541,12 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnQueue);
                 btnQueue.setAlignment(Pos.CENTER_LEFT);
 
-                HBox.setMargin(btnQueue, new Insets(0, 10, -7, 0));
+                HBox.setMargin(btnQueue, new Insets(20, 10, -7, 0));
 
                 Button btnUnqueue = new Button("Desenfileirar");
                 btnUnqueue.setOnAction(this::onBtnUnqueue);
                 btnUnqueue.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(btnUnqueue, new Insets(0, 10, -7, 0));
+                HBox.setMargin(btnUnqueue, new Insets(20, 10, -7, 0));
                 this.controlsHBox.getChildren().add(btnUnqueue);
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
@@ -523,12 +556,16 @@ public class MainController implements Initializable {
                 Button btnTree = new Button("Adicionar");
                 btnTree.setOnAction(this::onBtnAddClick);
                 this.controlsHBox.getChildren().add(btnTree);
-                btnTree.setAlignment(Pos.CENTER_LEFT);
+//                btnTree.setAlignment(Pos.CENTER_LEFT);
 
-                this.tree.add(50);
-                this.tree.add(90);
-                this.tree.add(10);
-                VBox.setMargin(btnTree, new Insets(0, 10, -7, 0));
+                Button btnTreeSearch = new Button("Pesquisar");
+                btnTreeSearch.setOnAction(this::onBtnAddClickSearch);
+                this.controlsHBox.getChildren().add(btnTreeSearch);
+//                btnTreeSearch.setAlignment(Pos.BASELINE_LEFT);
+
+
+                HBox.setMargin(btnTree, new Insets(20, 10, 0, 0));
+                HBox.setMargin(btnTreeSearch, new Insets(20, 10, 0, 7));
 
                 this.informations = new VBox();
                 Label inOrder = new Label("In ordem: " + this.tree.walk(INORDER));

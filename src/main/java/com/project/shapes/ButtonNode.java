@@ -30,11 +30,7 @@ public class ButtonNode extends Button {
         // Destaque na cor para o primeiro e ultimo item
         if (index == 1) {
             stringStyle += "-fx-background-color: #00ff00;";
-        }
-//        else if (index==){
-//            stringStyle += "-fx-background-color: #9a98a6;";
-//        }
-        else {
+        } else {
             stringStyle += "-fx-background-color: #9a98a6;";
         }
 
@@ -69,6 +65,19 @@ public class ButtonNode extends Button {
 
     public void setMarginLeft(int marginLeft) {
         this.marginLeft = marginLeft;
+    }
+
+    public void setSelected() {
+        String stringStyle = "-fx-pref-height: 50px; -fx-text-fill: white; -fx-font-size: 15pt; -fx-font-weight: bold; -fx-cursor: hand;";
+
+        stringStyle+= "-fx-pref-width: " +Integer.toString(this.width) + ";";
+
+        stringStyle += "-fx-background-color: #00ff00;";
+
+        this.setStyle(stringStyle);
+        this.setWidth(this.width);
+        this.setHeight(50);
+
     }
 }
 
