@@ -11,6 +11,11 @@ public class SimplyLinkedList {
         this.head = firstNode;
     }
 
+    public boolean vazia(){
+        if(this.length == 0)return true;
+        else return false;
+    }
+
     public SimplyLinkedListNode getHead() {
         return head;
     }
@@ -145,7 +150,8 @@ public class SimplyLinkedList {
 
         return -1;
     }
-
+    
+    
     public boolean remove(int position) {
         SimplyLinkedListNode copy = this.getHead();
 

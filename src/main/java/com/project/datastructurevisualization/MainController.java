@@ -20,8 +20,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 import static com.project.datastructure.tree.Type.*;
 
@@ -58,6 +60,9 @@ public class MainController implements Initializable {
     private Button btnAdd = new Button();
 
     @FXML
+    private Button btnReset = new Button();
+
+    @FXML
     private ScrollPane scrollContainer = new ScrollPane();
 
     @FXML
@@ -83,6 +88,9 @@ public class MainController implements Initializable {
 
         //Add button config
         this.btnAdd.setOnAction(this::onBtnAddClick);
+
+        //Add button reset config
+        this.btnReset.setOnAction(this::onBtnResetClick);
 
         this.inputValue.setOnKeyPressed(this::OnTypeInputValue);
     }
@@ -143,6 +151,8 @@ public class MainController implements Initializable {
             }
         }
     }
+
+    
 
     // Call-Back para o evento de click no botão de adicionar um novo elemento na estrutura
     public void onBtnAddClick(ActionEvent event) {
@@ -208,6 +218,40 @@ public class MainController implements Initializable {
             }
         } catch (Exception e) {
             this.inputValue.setText("");
+        }
+    }
+
+
+    //Call-Back para o evento de click do botão de resetar a estrutura
+    public void onBtnResetClick(ActionEvent event){
+
+        //o reset da lista simplesmente encadeada, tende a ser mais lento
+        if(currentType.equals("Lista Simplesmente Encadeada")){
+            this.simplyLinkedList = new SimplyLinkedList();
+            updatePositionsInput(this.simplyLinkedList.getLength());
+            shapesGroup.getChildren().clear();  
+        }
+
+        if(currentType.equals("Lista Duplamente Encadeada")){
+            this.doublyLinkedList = new DoublyLinkedList();
+            updatePositionsInput(doublyLinkedList.getLength());
+            shapesGroup.getChildren().clear();
+        }
+
+        if(currentType.equals("Pilha")){
+            this.stack =  new PilhaEnc();
+            shapesGroup.getChildren().clear();
+        }
+
+        if(currentType.equals("Fila")){
+            this.queue = new FilaEnc();
+            shapesGroup.getChildren().clear();
+        }
+
+        if(currentType.equals("Árvore De Pesquisa")){
+            this.tree = new Tree();
+            shapesGroup.getChildren().clear();
+            this.informations.getChildren().clear();
         }
     }
 
@@ -492,6 +536,8 @@ public class MainController implements Initializable {
                 Label labelPosition = new Label("Posição");
                 containerPosition.getChildren().add(labelPosition);
 
+              
+
                 if (this.currentType.equals("Lista Simplesmente Encadeada"))
                     this.updatePositionsInput(simplyLinkedList.getLength());
                 else
@@ -500,15 +546,21 @@ public class MainController implements Initializable {
                 // Ajustando a posição do input
                 containerPosition.getChildren().add(this.positionList);
                 containerPosition.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(containerPosition, new Insets(10, 10, 0, 0));
+                HBox.setMargin(containerPosition, new Insets(0, 20, 0, 0));
 
                 this.controlsHBox.getChildren().add(containerPosition);
 
                 Button btnAdd = new Button("Adicionar");
                 btnAdd.setOnAction(this::onBtnAddClick);
-                HBox.setMargin(btnAdd, new Insets(20, 0, -7, 7));
+                HBox.setMargin(btnAdd, new Insets(10, 7, -7, 7));
+
+                Button btnListReset = new Button("Resetar");
+                btnListReset.setOnAction(this::onBtnResetClick);
+                HBox.setMargin(btnListReset, new Insets(10, 0, -7, 0));
+
 
                 this.controlsHBox.getChildren().add(btnAdd);
+                this.controlsHBox.getChildren().add(btnListReset);
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
                 if (this.currentType.equals("Lista Simplesmente Encadeada"))
                     renderSimpleLinkedList();
@@ -522,13 +574,18 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnPile);
                 btnPile.setAlignment(Pos.CENTER_LEFT);
 
-                HBox.setMargin(btnPile, new Insets(20, 10, -7, 0));
+                HBox.setMargin(btnPile, new Insets(10, 10, -7, 0));
 
                 Button btnPop = new Button("Desempilhar");
                 btnPop.setOnAction(this::onBtnPopclick);
                 btnPop.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(btnPop, new Insets(20, 10, -7, 0));
+                HBox.setMargin(btnPop, new Insets(10, 10, -7, 0));
                 this.controlsHBox.getChildren().add(btnPop);
+
+                Button btnStackReset = new Button("Resetar");
+                btnStackReset.setOnAction(this::onBtnResetClick);
+                this.controlsHBox.getChildren().add(btnStackReset);
+                HBox.setMargin(btnStackReset, new Insets(10, 10, -7, 0));
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
                 renderStack();
@@ -541,13 +598,18 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnQueue);
                 btnQueue.setAlignment(Pos.CENTER_LEFT);
 
-                HBox.setMargin(btnQueue, new Insets(20, 10, -7, 0));
+                HBox.setMargin(btnQueue, new Insets(10, 10, -7, 0));
 
                 Button btnUnqueue = new Button("Desenfileirar");
                 btnUnqueue.setOnAction(this::onBtnUnqueue);
                 btnUnqueue.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(btnUnqueue, new Insets(20, 10, -7, 0));
+                HBox.setMargin(btnUnqueue, new Insets(10, 10, -7, 0));
                 this.controlsHBox.getChildren().add(btnUnqueue);
+
+                Button btnQueueReset = new Button("Resetar");
+                btnQueueReset.setOnAction(this::onBtnResetClick);
+                this.controlsHBox.getChildren().add(btnQueueReset);
+                HBox.setMargin(btnQueueReset, new Insets(10, 10, -7, 0));
 
                 this.controlsHBox.setAlignment(Pos.CENTER_LEFT);
                 renderQueue();
@@ -563,9 +625,13 @@ public class MainController implements Initializable {
                 this.controlsHBox.getChildren().add(btnTreeSearch);
 //                btnTreeSearch.setAlignment(Pos.BASELINE_LEFT);
 
+            Button btnTreeReset = new Button("Resetar");
+            btnTreeReset.setOnAction(this::onBtnResetClick);
+            this.controlsHBox.getChildren().add(btnTreeReset);
+            HBox.setMargin(btnTreeReset, new Insets(10, 10, 0, 0));
 
-                HBox.setMargin(btnTree, new Insets(20, 10, 0, 0));
-                HBox.setMargin(btnTreeSearch, new Insets(20, 10, 0, 7));
+                HBox.setMargin(btnTree, new Insets(10, 10, 0, 0));
+                HBox.setMargin(btnTreeSearch, new Insets(10, 10, 0, 7));
 
                 this.informations = new VBox();
                 Label inOrder = new Label("In ordem: " + this.tree.walk(INORDER));
@@ -581,7 +647,8 @@ public class MainController implements Initializable {
                 HBox.setMargin(informations, new Insets(0, 10, 0, 50));
                 renderTree();
                 break;
-        }
+            
+            }
 //        currentType.equals("Lista Simplesmente Encadeada")
     }
 }

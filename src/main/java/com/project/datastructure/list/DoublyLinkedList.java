@@ -14,6 +14,11 @@ public class DoublyLinkedList {
         this.tail = head;
     }
 
+    public boolean vazia(){
+        if(this.length == 0) return true;
+        else return false;
+    }
+
     public boolean add(int value, int position) {
         DoublyLinkedListNode element = new DoublyLinkedListNode(value);
         if (position <= 0 || position > this.length + 1) {
